@@ -61,5 +61,35 @@ VITE_API_URL=https://auction-backend-1-5u5c.onrender.com
 
 ## 🌐 Deploy em Produção
 
-O aplicativo front-end está implantado e disponível na Vercel:
-* **URL do App:** `https://auction-frontend-sable.vercel.app`
+* **Front-end (Vercel):** `https://auction-frontend-sable.vercel.app`
+* **Back-end (Render):** `https://auction-backend-indc.onrender.com`
+
+> ⚠️ **Nota de Desempenho (Plano Gratuito do Render):** 
+> Como o back-end está hospedado na camada gratuita do Render, a instância entra em modo de hibernação após períodos de inatividade. Por esse motivo, **a primeira requisição à API pode levar entre 30 e 60 segundos** para "acordar" o servidor. As requisições subsequentes responderão em tempo real e com velocidade normal.
+
+---
+
+## 🔑 Credenciais para Teste Rápido em Produção (Dados Semeados)
+
+Para avaliar o sistema sem a necessidade de criar novas contas e lotes do zero, utilize os acessos pré-cadastrados abaixo:
+
+### 1. Leiloeiro
+* **E-mail:** leiloeiro@email.com
+* **Senha:** Leiloeiro123!
+* **Papel:** Gestão e criação de leilões/lotes.
+
+### 2. Licitante 1 (Comprador 1)
+* **Nome:** Comprador Um
+* **E-mail:** licitante1@email.com
+* **Senha:** Licitante123!
+
+### 3. Licitante 2 (Comprador 2)
+* **Nome:** Comprador Dois
+* **E-mail:** licitante2@email.com
+* **Senha:** Licitante223!
+
+### 4. Lote Ativo no Ar
+* **Item:** iPhone X
+* **Status:** Lances Abertos
+* **Valor Inicial:** R$ 899,99
+
