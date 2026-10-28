@@ -1,75 +1,65 @@
-# React + TypeScript + Vite
+# Auction Platform - Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web moderna desenvolvida em **React** e **Vite** para a plataforma de leilões online, permitindo navegação em tempo real, lances dinâmicos e controle de carteira.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tecnologias Utilizadas
 
-## React Compiler
+* **Biblioteca Principal:** React com TypeScript
+* **Build Tool:** Vite
+* **Estilização:** Tailwind CSS / Styled Components
+* **Requisições HTTP:** Axios / Fetch API
+* **Hospedagem / Deploy:** Vercel
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📌 Principais Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Autenticação:** Telas de Login e Cadastro integradas à API via JWT.
+- **Dashboard de Leilões:** Visualização de leilões ativos, lances atuais e histórico.
+- **Painel de Lances:** Interface intuitiva para inserção de lances com validações no front-end.
+- **Gestão de Carteira:** Exibição do saldo disponível e saldo comprometido em lances.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ⚙️ Variáveis de Ambiente
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Crie um arquivo `.env` na raiz do projeto front-end com a seguinte variável:
 
+```env
+VITE_API_URL=https://auction-backend-1-5u5c.onrender.com
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+> **Atenção:** Certifique-se de não incluir uma barra `/` no final da URL da API.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Como Executar Localmente
 
-```
+### Pré-requisitos
+* Node.js (v18+)
+* npm ou yarn
+
+### Passo a Passo
+
+1. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+
+2. **Configure o arquivo `.env`** apontando para a API local (`http://localhost:3000`) ou de produção.
+
+3. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
+
+4. A aplicação estará disponível em `http://localhost:5173`.
+
+---
+
+## 🌐 Deploy em Produção
+
+O aplicativo front-end está implantado e disponível na Vercel:
+* **URL do App:** `https://auction-frontend-sable.vercel.app`
