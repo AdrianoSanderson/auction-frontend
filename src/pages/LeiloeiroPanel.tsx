@@ -31,14 +31,22 @@ export function LeiloeiroPanel() {
   };
 
   const handleCreateAuction = async (productId: number, basePrice: number) => {
+    setLoading(true);
     try {
       await api.post('/auctions', {
         externalProductId: productId,
         initialPrice: basePrice,
       });
       setCreatedMsg('Lote cadastrado com sucesso!');
+
+      window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     } catch (err: any) {
       alert(err.response?.data?.message || 'Erro ao criar lote');
+    } finally {
+      setLoading(false);
     }
   };
 
