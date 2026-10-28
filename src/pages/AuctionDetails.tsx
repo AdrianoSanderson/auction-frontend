@@ -13,11 +13,22 @@ interface Auction {
   leiloeiro_id: string;
 }
 
+interface Bid {
+  id: string;
+  amount: number;
+  created_at: string;
+  user: {
+    name: string;
+    email: string;
+  };
+}
+
 export function AuctionDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const [auction, setAuction] = useState<Auction | null>(null);
+  const [bids, setBids] = useState<Bid[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [bidAmount, setBidAmount] = useState<number | ''>('');
@@ -25,18 +36,26 @@ export function AuctionDetails() {
   const userJson = localStorage.getItem('@auction:user');
   const user = userJson ? JSON.parse(userJson) : null;
 
+  const loadAuctionData = async () => {
+    try {
+      const [auctionRes, bidsRes] = await Promise.all([
+        api.get(`/auctions/${id}`),
+        api.get(`/bids/auction/${id}`),
+      ]);
+
+      setAuction(auctionRes.data);
+      setBids(bidsRes.data);
+      // Sugere um lance mínimo levemente superior ao preço atual
+      setBidAmount(Number(auctionRes.data.current_price) + 10);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Erro ao carregar detalhes do lote.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    api
-      .get(`/auctions/${id}`)
-      .then((res) => {
-        setAuction(res.data);
-        // Sugere um lance inicial levemente maior que o valor atual
-        setBidAmount(Number(res.data.current_price) + 10);
-      })
-      .catch((err) => {
-        setError(err.response?.data?.message || 'Erro ao carregar detalhes do lote.');
-      })
-      .finally(() => setLoading(false));
+    loadAuctionData();
   }, [id]);
 
   const handlePlaceBid = async (e: React.FormEvent) => {
@@ -47,16 +66,13 @@ export function AuctionDetails() {
     }
 
     try {
-      // Endpoint de lances (que vamos criar/conectar no backend)
       await api.post('/bids', {
         auctionId: id,
         amount: Number(bidAmount),
       });
 
       alert('Lance realizado com sucesso!');
-      // Recarrega os dados atualizados do lote
-      const updated = await api.get(`/auctions/${id}`);
-      setAuction(updated.data);
+      await loadAuctionData();
     } catch (err: any) {
       alert(err.response?.data?.message || 'Erro ao processar o lance.');
     }
@@ -74,7 +90,7 @@ export function AuctionDetails() {
         ← Voltar para a vitrine
       </button>
 
-      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-6 p-6 mb-6">
         <div>
           <img
             src={auction.image_url}
@@ -137,6 +153,33 @@ export function AuctionDetails() {
             </button>
           )}
         </div>
+      </div>
+
+      {/* Histórico de Lances */}
+      <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+        <h3 className="text-lg font-bold mb-4">Histórico de Lances</h3>
+        {bids.length === 0 ? (
+          <p className="text-slate-400 text-sm">Nenhum lance realizado para este lote ainda. Seja o primeiro!</p>
+        ) : (
+          <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
+            {bids.map((bid) => (
+              <div
+                key={bid.id}
+                className="bg-slate-900 border border-slate-700 p-3 rounded flex items-center justify-between text-sm"
+              >
+                <div>
+                  <span className="font-semibold text-slate-200">{bid.user?.name || 'Usuário'}</span>
+                  <span className="text-xs text-slate-500 ml-2">
+                    ({new Date(bid.created_at).toLocaleString('pt-BR')})
+                  </span>
+                </div>
+                <div className="font-bold text-emerald-400">
+                  R$ {Number(bid.amount).toFixed(2)}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
